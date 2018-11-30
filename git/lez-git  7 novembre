@@ -1,0 +1,22 @@
+git ls-files : mostra file sotto versionamento
+git remote
+git remote add nome indirizzo : per collegare
+
+
+SOLUZIONI DEGLI ES
+
+Es2
+	Nei pdf
+Es3
+	Per casa
+	Indizio: usare 'stash'
+	
+	Una volta finito l'es, 
+	su gitlab fare una richiesta di merge, 
+	da branch primaesercitazione a branch master
+
+
+Non si puo` pushare quando la repo locale e` piu` indietro (vedi HEAD) della remota
+Il brance master e` protetto; non si puo` sovrascrivere neanche con l'opz --forced
+Se volessi proprio farlo, dovresti togliere la protezione da gitlab.
+

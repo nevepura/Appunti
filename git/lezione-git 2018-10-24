@@ -1,0 +1,108 @@
+lez 24 ottobre
+
+
+HEAD
+
+Comandi di Berto 
+
+ga
+gc
+
+git checkout
+	git chekout {id} -- {nome_file}
+	
+Ritornare (con tutta la repo) a un dato commit precedente
+	git checkout <commit>
+	
+	si entra cosi` nello stato di 
+	detached HEAD state
+	
+	Cosa posso fare ora?
+	- 
+	-
+	
+RESET
+	git reset
+	git reset [<mode>][<commit>]
+	
+	permette di resettare il branch a un commit precedente
+	
+	Modalita`
+	--hard
+		l'HEAD punta al nuovo commit specificato, che diventa l'ultimo commit: i successivi sono persi
+		sia la WD che l'index vengono resettati al commit specificato
+		
+	--soft
+		Anche qui lo HEAD punta al nuovo commit specificato
+		Le modifiche successive vengono tolte dalla storia, ma tornano alla staging area; quindi, rimuove i commit successivi ma mantiene le modifiche; somiglia quindi al commit --amend
+		
+	--mixed
+	E` la default mode
+	L'HEAD punta al commit specificato
+	E` come la soft, non perdo le modifiche: ma le modifiche restano nella staging area
+	
+Theory time con M Pasqua
+	Ho una lista di hash assocciati a rispettivi commit. Quello in cima e` lo head.
+	Ogni commit e` un object, e contiene le info specificate. 
+	In git, integrity key e identity key sono la stessa cosa, cioe` l'Hash.
+	In realta` non ogni file, bensi` ogni gruppo di file ha le info associate.
+	Alcuni hash non sono associati a file.
+	Ricordiamo, ogni file puo` essere associato a uno Snapshot(pesante) o a una Patch(leggera ma solo per file testuali).
+	
+	<local> , <remote>
+	Sono due tipi di repository
+	Possono stare sulla stessa macchina fisica
+	Remote e` il papa`, verso cui tutto va.
+	Per pigliare i file dalla remote, usare il comando 
+		clone
+	Che copia tutti i commit da remote e li porta in locale
+	
+	E se ho clonato la repo in locale, ma non e` aggiornata? Non si usa clone, ma
+		pull
+	La repo local manda la 'foto' dei suoi commit alla remote; la remote controlla che gli hash siano identici, poi prende i commit che mancano, li comprime e li invia. La local li prende e li attacca.
+	
+	Nel caso contrario, cioe` la mia repo e` piu` aggiornata del papa`, si fa
+		push
+	
+	E` normale che la local e la remote condividano un tratto, ma ognuna ha una parte aggiornata che l'altra non ha.
+	Se si lavora in modo indipendente su cose diverse, il pull avviene senza problemi.
+	Se no, se per es stiamo lavorando sullo stesso file, magari sulla stessa linea, avviene un conflitto.
+	!! CONFLITTO !!
+	
+	Parla di History
+	
+	Sembra che uno dei due sistemi (centralizzati/non) tenga una history in locale. 
+	
+Berto
+	Creiamo una repo remota su gitlab
+	Cloniamola con 
+		git clone <indirizzo http della repo su gitlab>
+	git remote [opzioni]
+		serve aggiungere la repo remote, in qualche modo
+	aggiungiamo il README alla repo tramite Gitlab
+	Ora abbiamo un commit in remote, ma local non e` aggiornato.
+	In locale
+		git fetch
+	fa conoscere il nuiovo commit alla locale
+	...
+	
+	PUSH
+	
+	Creare
+		.gitlab-ci.yml
+	copiando il contenuto da gitlab
+	aggiungi un generico index.html
+	add i due file
+	commit
+	push
+	
+	git stash
+		salva in locale le modifiche su un file nascosto
+		Sequenza:
+			git add, git stash
+			crea un commit separato
+
+	Prossima settimana:	
+		branch, risoluzione dei conflitti
+
+	Per casa: provare a modificare la repo

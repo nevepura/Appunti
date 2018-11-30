@@ -1,0 +1,258 @@
+CORSO GIT
+LEZ2
+2018-10-17, mer
+
+	WD: Working Directory
+	Index: altro nome della Staging Area
+
+	Perche` git? Provate SVN e vedrete (o qualsiasi sistema di versionamento centralizzato)
+
+	Un file puo` essere 
+
+	UNTRACKED
+	Unmodified 
+	Modified
+	Staged
+
+	Unmodified: nessuna modifica effettuata rispetto all'ultimo commit
+	Modified: file modificato, ma i cambiamenti non sono stati committati
+
+	COME VERSIONARE UN PROGETTO METTENDOLO IN GIT
+
+	ho la .git directory
+
+
+	faccio il checkout (c'e` chi la chiama checkin), e porto i file nella WD
+	2)
+	3)
+
+
+	Ci sono alcuni tipi di file che non ci interessa versionare
+	es: in un progetto c++, tra sviluppatori si condividono le interfacce .h, ma non le implementazioni .cpp
+
+
+	Soluzione: file .gitignore
+
+GITIGNORE
+
+	.gitignore
+		e` un file nascosto da porre nella radice della wd. Indica i file Untracked che git ignorera`.
+	
+	git add .
+		... tutti i file modified
+	
+	Ci sono strumenti online per generare automaticamente il file .gitignore
+	es:
+		gitignore.io
+		github.com/github/gitignore
+		
+	E il .gitignore e` tutto cio` che serve per aggiungere il versionamento a un progetto senza fare casini.
+
+
+
+Approfondiamo alcuni comandi
+	
+ADD e RM
+	
+	ADD
+	
+	
+	Vediamo alcune opzioni di add
+	
+	--help 
+	
+	git add -f / git add --force 
+		il file .gitignore viene ignorato, anche se la sua estensione lo porterebbe a essere ignorato.
+	
+	--dry-run
+	
+	-A/--all
+		[ equivale a: git add . ]
+		aggiorna tutti i file gia` sotto versionamento
+		aggiunge alla staging area i file untracked
+		elimina eventuali file rimossi
+	
+	-u/--update
+		aggiorna 
+		elimina
+		non aggiunge
+		
+	--ignore-removal/--no-all
+		aggiorna
+		aggiunge
+		ignora i file eliminati
+
+	RM
+	
+	Permette di eliminare i file sia dalla staging area, che dal versionamento. Possono essere rimossi sse uncommitted (aggirabile con --force)
+	
+	Opzioni
+	-f/--force
+	
+	--cached
+		toglie il file dal versionamento ma non dal filesystem (dalla cartella)
+		Posso sempre recuperare il file dal commit precedente se dimentico questa opzione
+	
+UNDOING THINGS
+	
+	mi son scordato di aggiungere un file al commit
+	Sol 1:
+		add
+	Sol 2: AMEND
+		git commit --amend
+		
+		
+	git reset HEAD <file>
+	
+	git checkout -- <file>
+	
+esercizio
+	touch prova1.txt
+	touch prova2.txt
+	git add .
+	
+	git commit
+		committa tutti i file committabili
+
+	git commit --amend
+
+	Dopo amend, fai 'git status'; non si vede piu` la rm.
+	amend funzia solo con l'ultimo commit
+	Serve a tenere la storia dei commit piu` pulita. 
+	
+	
+	
+STATUS
+	
+	Opzioni:
+	-s
+		mostra output breve
+		
+	-v/--verbose
+		mostra non solo i file modificati, ma anche le loro modifiche
+	
+	-u[<mode>] RIVEDERE
+		mostra i file Untracked in una tra 3 modalita`
+		no : non mostra i file non tracciati
+		normal : mostra file e cartelle non tracciati
+		all : di default; mostra tutto, anche file non tracciati in sottocartelle
+		
+LOG
+	Opzioni suddivise in 2 rami
+	1)	Come formattare
+	
+	--oneline
+		id e linea del commmit in una linea
+	
+	--decorate
+		
+	--stat
+	
+	-p
+	
+	--graph
+	
+	--pretty=format:"<string>"
+		Questo e` figo
+		Usa placeholder predefiniti
+		cn : committed name
+		h : hash
+		cd : committed date
+		Ci sono molte altre opzioni!
+	
+	2) Come filtrare
+	
+	
+	-<n>
+		filtra per numero
+		sostituire un numero a n per vedere gli n commit precedenti
+
+	--after
+	--before
+		filtra per data
+		
+	--author=<pattern>
+	
+	--grep=<pattern>
+		filtra per messaggio di commit
+		
+	git log -- 
+		per nome file
+		-- indica che si tratta di un file e non di un branch
+
+	-S"<string>"
+		per contenuto introdotto dal commit
+		
+	<since>..<until>
+		per range
+	
+	
+THEORY TIME con Marco P
+	
+	Ci sono due tipi di file
+		binario
+			e` solo un ins di 0 e 1
+		testuale
+			e` discretizzato: divisibile in parti
+	
+	Commit
+		a ogni commit, una copia fisica del file viene salvata nella repo. Se il file e` pesante, tanto spazio. E` un problema, se non per lo storage, per la condivisione in rete.
+	Ma il buon Git comprime i file committati. E` efficiente: a seconda della bonta` delmio dispositivo, git applica un diverso algoritmo di compressione, che avviene quasi istantaneamente.
+	Questo modo di fare commit si chiama commit snapshot-based
+	
+	Altro modo: commit patching based. Nel nuovo file non si salva la nuova versione, bensi` la differenza tra il secondo e il primo (diff).
+	Quindi, il file originale viene patchato tante volte. Tengo solo il file originale, le patch e il file finale. Si puo` anche tornare indietro nella storia dei file, in questo modo. 
+	Il commit patching based si puo` fare per file testuali, perche` sono discretizzati. Invece, nei file binari no.
+	Git e` nato come snapshot based, ma si e` evoluto in patching based per i testuali.
+	
+	Concludendo
+	- a seconda del contesto di uso, alcuni VCS sono migliori di altri.
+	- non versionare file binari pesanti
+	- ci sono tecniche per gestire file pesanti e versionati. Usa simlink e scarica sse il file pesante e` effettivamente necessario. Es: file di Autocad
+	
+	OBJECTS
+
+	Un oggetto possiede meta-informazioni (info sulle info):
+		timestamp
+		autore
+		id (in git e` un hash)
+		integrity key
+	
+	INTEGRITY KEY
+	A ogni commit, il file viene processato con SHA-1, che ritorna la firma del file. Confrontandolo con un'altra IK, si vede se il file e` lo stesso o no. Caratteristica di SHA-1 e` la gran sensibilita` ai cambiamenti (piccole mod al file -> grandi mod allo hash)
+	
+
+Sulla Staging Area
+	La staging area e` una protezione per noi (che non committiamo quando non si puo`) e per le repo (che non si riempia di spazza)
+
+
+VCS Centralizzati
+
+comandi
+	clone
+		non puoi farlo nei VCS centralizzati
+	pull
+	push
+
+	
+La repo centrale dev'essere sempre disponibile e raggiungibile.
+
+VCS Decentralizzato
+
+	Tutti uguali, non c'e` client ne` server
+	Le repo sono idealmente atomiche
+		ognuna e` essenzialmente locale, nessuna disturba le altre
+	non c'e` un riferimento centrale
+		le policy di lavoro fanno da riferimento
+	...
+	
+comandi di interesse:
+	clone
+	push
+	pull
+	
+	push e pull richiedono sincronizzazione: per pushare verso uno bisogna aver pullato da lui. Ecco perche` si usano github e gitlab, ovvero piattaforme ospitanti repo, punto di incontro di puller e pusher.
+	Github e Gitlab offrono rendering incorporato dei file, tra cui .pdf e .md
+	.md : file markdown
+	
+	FINE

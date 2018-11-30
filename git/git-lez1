@@ -1,0 +1,75 @@
+CORSO GIT
+LEZ1
+2018-10-10
+
+corso: tutti i merc, sempre stessa ora
+
+iscriversi al gruppo:
+	https://gitlab.com/git-for-dummies
+	
+libri
+	https:git-scm.com/book/en/v2
+	
+TEORIA
+
+Version Control
+
+Repository
+	ho una Cartella -> La incapsuliamo -> Aggiungiamo un DB. 
+	Ogni volta che aggiungo un file al sistema Repository, voglio ottenere in output un Oggetto, creato dal DB.
+	
+	Ogni sistema di versionamento ha le proprie naming conventions
+	
+	Le 3 componenti della repo si chiamano:
+	- working folder (WF)
+	- staging area: e` una cosa che si intrappone tra WF e Repo
+	- repository: il DB
+	
+	Usualmente, i file nella working folder ma non nella repo sono in rosso.
+	Add: Il comando Add li porta nella Staging Area (diventano verdi). Va fatto un Add per ogni file.
+	Committ: porta il file dalla staging area alla repo. Svuota la staging area.
+
+	
+TERMINALE e comandi
+
+	COME CONFIGURARE
+	git config
+	
+	opzioni:
+	1) --system : comune a tutti gli utenti del sys. Butta le variabili in /etc
+	2) --global : per l utente corrente del sys
+	3) oppure modificando il file : vale solo per il progetto
+	Se modifico a livello superiore, copre le opzioni dei liv inferiori. Ad esempio, il file copre le config global, che coprono le system.
+	
+	argomenti
+	user.name
+	user.mail
+	
+	es:
+		git config --global user.name "pippo"
+		
+	Alcuni comandi:
+	git init
+		Funziona anche per progetti gia` creati, ma bisogna avere delle accortezze
+	git status
+	git add
+	git commit
+		-m "messaggio" per allegare un messaggio descrittivo del commit. E` buona norma farlo SEMPRE!	
+		
+	Non vogliamo che tutti i file nella working directory siano controllati dal versionamento! Ecco perche` l'add e` una scelta.
+	Inoltre, alcuni tipi di file non vanno versionati, tipo i .pdf.
+	L'add pone i file nella staging area. Che bello!
+	
+	Un file nella WF si trova in una delle 3 fasi:
+		unmodified
+		modified
+		staged
+	
+	git log	
+	
+ESEMPI dal Massimo Esperto di Integrazione Continua Filippo
+
+gource: mostra graficamente i commit
+Cont Integration
+Cont Delivery
+
