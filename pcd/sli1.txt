@@ -2,3 +2,61 @@ data di inizio: 2019-01-28
 slide 1
 link: https://www.math.unipd.it/~abujari/pcd1819/lec1.pdf
 
+Errori:
+slide 65: correggere: Colorpoint cp = (Colorpoint)o;
+
+Convenzioni
+
+Documentazione
+	per parti esposte del codice, API
+	puoi usare tag html
+	@param
+	@return
+	@throws
+
+Object class
+	equals()
+	toString()
+	clone()
+	finalize()
+
+equals()
+
+	boolean equals(Object obj);
+
+	Si può evitare di ridefinire (overriding) se:
+		ogni istanza della classe è unica
+		non sei interessato a dire che due obj sono uguali se riferiscono a un R valore equivalente
+		la definizione di equals nella superclasse è sufficiente
+		la classe è privata (quindi equals non è mai usato)
+
+	il contratto generale di equals() deve valere sempre quando lo ridefinisci, e rispetta le proprietà seguenti:
+		riflessività: x.equals(x) ritorna TRUE
+		simmetria: x.equals(y) == y.equals(x)
+		transitività: se x.equals(y) e y.equals(z) => x.equals(z)
+		consistenza
+		valori nulli: x.equals(null) ritorna FALSE
+
+		E' difficile preservare simmetria e transitività quando confronti tipi diversi di una gerarchia.
+		A seconda del tipo, viene chiamato equals() della sottoclasse o della superclasse. E a seconda della ridefinizione di equals() possono nascere vari problemi (vedi Colorpoint).
+		Quindi, è meglio preferire la composizione all'ereditarietà.
+
+		Come implementare equals(), punti:
+			controllare con == se i reference sono uguali
+			usa instanceof per
+				controllare se i tipi sono uguali
+				questo risolve il problema del valore null
+			casta l'argomento di equals() da obj al tipo della classe di cui equals() fa parte
+			controlla tutti i campi significativi
+			controlla le proprietà di riflessività, simmetria e transitività
+
+		Errore: usare getClass() al posto di instance of. Viola il
+		principio di sostituzione di Liskov: https://it.wikipedia.org/wiki/Principio_di_sostituzione_di_Liskov
+		che dice che data una proprietà, posso sostituire un tipo con un sottotipo e la proprietà vale ancora.
+
+		"If you override equals(), must override hashCode() // later on"
+
+toString()
+	
+	String toString()
+	
