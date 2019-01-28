@@ -1,0 +1,4 @@
+data di inizio: 2019-01-28
+slide 1
+link: https://www.math.unipd.it/~abujari/pcd1819/lec1.pdf
+
