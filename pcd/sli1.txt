@@ -1,11 +1,17 @@
 data di inizio: 2019-01-28
+data di fine: 2019-01-29
 slide 1
 link: https://www.math.unipd.it/~abujari/pcd1819/lec1.pdf
 
 Errori:
 slide 65: correggere: Colorpoint cp = (Colorpoint)o;
-
+slide 82: typo: return results => return result
+slide 91: typo: togliere ';' dal termine del metodo finalize()
 Convenzioni
+
+Pattern
+	Builder
+	Factory Method
 
 Documentazione
 	per parti esposte del codice, API
@@ -59,4 +65,122 @@ equals()
 toString()
 	
 	String toString()
+
+	es: int a = 2;
+		String s = a.toString();
+
+	E' sempre bene fare overriding di toString()
+
+	Ci sono i valori letterali stringa
+		String a = "pippo";
+
+	E le stringhe allocate con la new
+		String b = new String("pippo");
+
+	Stesso valore, ma con la new occupi ogni volta una nuova porzione di memoria dello heap, mentre con il letterale punti sempre alla stessa area.
+
+var
+	var x = 2;
+	var y = "pluto";
+	il tipo di questa variabile non è dichiarato, ma è inferito dal compilatore staticamente, a tempo di compilazione. 
+	(Si ricorda che Java è un linguaggio a tipi definiti staticamente)
+	https://openjdk.java.net/projects/amber/LVTIFAQ.html
+
+Boxing
+	"inscatolamento": conversione volontaria da tipo primitivo a tipo wrapper. Scopo: sfruttare i metodi offerti dalla classe Object.
+	info: https://www.html.it/pag/18024/boxing-e-unboxing/
+Unboxing
+	conversione automatica da tipo wrapper a tipo primitivo
+	es: Integer => int
+Autoboxing
+	conversione automatica da tipo primitivo a tipo wrapper
+	es: int => Integer
+
+Cloneable
+	interfaccia marcatrice:
+		non implementa alcun metodo
+		indica questo: la classe che la implementa ridefinisce il metodo clone
+clone()
+	Segnatura:
+	protected Object clone() throws CloneNotSupportedException;
+
+	Contratto:
+	crea una copia profonda dell'oggetto clonato
+	clone non usa alcun costruttore al suo interno
+	Più formalmente:
+		x.clone() != x
+		x.clone().getClass() == x.getClass()
+		x.clone().equals(x) // a patto di aver ridefinito equals()
+
+	Nell'implementare clone():
+		aggiungere "implements Cloneable"
+		chiamare SEMPRE! subito super.clone()
+		se la classe è fatta di campi primitivi o immutabili, super.clone() è sufficiente
+			perché non ci sono problemi di memoria! i campi immutabili sono stabili, e tutti possono riferirsi a essi
+		altrimenti (campi mutabili, oggetti), fai copia profonda
+
+	Nota sugli array: in Java un array è un oggetto: usa clone() su array per copiarlo interamente (deep copy).
+arraycopy()
+	arraycopy() su un array copia i reference (shallow copy)
+
+	Ci sono problemi se ho campi final. 
+	Soluzioni:
+		non implementare Cloneable, non ridef clone()
+		fare piuttosto un costruttore di copia, o
+		usare Factory Method
+
+Comparable
+	interfaccia per dare ordine totale agli oggetti di una classe
+	fornisce il metodo compareTo()
+
+compareTo()
 	
+	segnatura:
+	int compareTo(arg)
+
+
+
+	es: 
+		x=1; y=2;
+		x.compareTo(2);
+
+	ritorna:
+		-1,0,1 a seconda della grandezza dei due oggetti confrontati (this e l'argomento)
+
+	Eccezioni: può lanciare
+		NullPointer: se l'argomento è null
+		ClassCastException: se l'argomento non regge il confronto (applausi) con this
+
+	ha gli stessi problemi di equals() con l'ereditarietà, per cui meglio la composizione
+
+	Implementazione
+		simile a equals:
+			prima si testa se this e l'argomento sono ==
+			poi si lancia un'eccezione se l'argomento è di tipo differente da this
+			infine, si confrontano i campi delle classi, e si ritorna il risultato (int)
+
+finalize()
+	impattante sulla performanec
+	chiamato dal garbage collector per pulire la memoria
+
+terminate()
+	vedi più avanti nelle lezioni con Mauro
+
+builder pattern
+	serve per costruire oggetti con molti parametri.
+	affronta il problema della scalabilità del numero dei parametri
+
+	tradizionalmente si usano (vedi slide, spiegato bene)
+	telescopy constructor pattern
+		difficile da scrivere e leggere
+	javabeans pattern
+		più facile da scrivere e leggere
+		soffre di possibile inconsistenza durante la costruzione
+		(si setta un parametro per volta con un diverso metodo, potrebbero avvenire interruzioni)
+
+	builder pattern
+		il migilore
+		facile da leggere e scrivere: mostra nome metodo e parametro
+		controllo sulla consistenza dello stato
+
+Fine
