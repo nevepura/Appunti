@@ -1,0 +1,98 @@
+data di inizio: 2019-01-30
+data di fine: 
+slide 2
+
+Errori
+
+Design pattern
+	static factory
+
+Argomenti trattati
+
+	classi
+	interfacce
+		e best practices associate
+	mutable/immutable state
+	aggiunte di java8 alle interfacce
+	classi astratte
+	classi interne
+	inversion of control (dependency injection)
+
+Livelli di accesso
+	i campi (o membri) di una classe hanno 4 livelli di accesso
+		public
+			può accedere chiunque
+			per costanti pubbliche o reference a oggetti immutabili
+			errore: rendere pubblico un array final di oggetti. L'array è final, ma gli oggetti possono cambiare
+			in generale, evitare campi pubblici. Usare campi privati, con metodi di accesso pubblici(get(), set())
+		protected
+			può accedere chiunque nello stesso package o un sottotipo fuori dal pkg
+		default
+			può accedere chiunque nello stesso package
+		private
+			può accedere solo la stessa classe
+	cercare di dare rendere ogni membro più inacessibile possibile
+
+best practice: minimizzare la mutabilità
+
+classe immutabile: motivi per desiderare che lo sia
+	facile da scrivere
+	facile da usare
+	meno errori
+	più sicurezza
+	più facile da condividere
+	thread safety
+
+regole per rendere una classe immutabile
+	1 non fornire metodi mutatori
+	2 fare in modo che non sia possibile fare overriding dei suoi metodi
+		come si fa?
+			a class final
+			b metodi final
+			c costruttori a visibilità package (permette subclassing) o private(non lo permette)
+				richiede static factory (vedi definizione dopo)
+
+	3 porre tutti i campi finali
+		forza l'mmutabilità
+		a volte è meglio l'inizializzazione lazy (ovvero creare l'ovvetto esattamente quando ce n'è bisogno)
+	4 porre tutti i campi privati
+	5 fare in modo che le componenti mutevoli siano gestite attraverso accesso mutualmente esclusivo
+		mai dare al cliente la chance di toccare un campo mutabile
+		mai ritornare un campo mutabile da un metodo pubblico
+		fare "copie difensive"
+		
+		es: procedural programming vs functional programming
+
+		// metodo brutto, che modifica un oggetto mutabile. Grado di condivisione: comunista
+		public void foo (T1 a, T2 b) {
+			// modifica this
+		}
+
+		=> meglio fare
+
+		// lavoro con una copia di foo. Grado di condivisione: Salvini.
+		public Foo foo (T1 a, T2 b) {
+			Foo f = ...
+			... 
+			return f;
+		}
+
+
+static factory
+	è un metodo statico fa le stesse cose del costruttore, ma non su this bensi su un oggetto creato con new e ritornato
+
+	es:
+		public class Complex{
+			private final double re;
+			private final double im;
+
+			// costruttore privato
+			private Complex(double re, double im){
+				this.re = re; this.im = im;
+			}
+			// static factory method
+			public static Complex valueOf (double re, double im){
+				return new Complex (re,im);
+			}
+		}
+

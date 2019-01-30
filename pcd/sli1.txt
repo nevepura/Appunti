@@ -7,11 +7,16 @@ Errori:
 slide 65: correggere: Colorpoint cp = (Colorpoint)o;
 slide 82: typo: return results => return result
 slide 91: typo: togliere ';' dal termine del metodo finalize()
-Convenzioni
 
-Pattern
-	Builder
+
+
+Design Pattern presenti
 	Factory Method
+	Teelscopy constructor
+	Javabeans
+	Builder
+
+Convenzioni (nomenclatura)
 
 Documentazione
 	per parti esposte del codice, API
