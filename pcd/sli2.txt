@@ -1,5 +1,5 @@
 data di inizio: 2019-01-30
-data di fine: 
+data di fine: 2019-01-30
 slide 2
 
 Errori
@@ -13,6 +13,8 @@ Argomenti trattati
 	interfacce
 		e best practices associate
 	mutable/immutable state
+	
+	// questi nella prossima slide
 	aggiunte di java8 alle interfacce
 	classi astratte
 	classi interne
@@ -80,6 +82,7 @@ regole per rendere una classe immutabile
 
 static factory
 	è un metodo statico fa le stesse cose del costruttore, ma non su this bensi su un oggetto creato con new e ritornato
+	può avere una cache per gli oggetti creati di frequente
 
 	es:
 		public class Complex{
@@ -96,3 +99,44 @@ static factory
 			}
 		}
 
+Ripassino sulla composizione
+	in UML:
+	aggregazione
+		relazione di tipo "part of": un oggetto è parte di un'altro
+		gli aggregati possono essere condivisi
+	composizione
+		più forte
+		es: scacchiera e celle
+		gli aggregati appartengono a un solo aggregatore (l'oggetto intero)
+		solo l'aggregatore può creare e distruggere le sue parti, che sono sue e di nessun altro
+	Alla fine della fiera
+	la composizione è tipo la cosa delle classi interne
+
+Favour composition over inheritance
+	l'ereditarietà rompe l'incapsulamento
+		le sottoclassi possono rompere gli invarianti delle super, specie se sono maligne
+		per evolvere una superclasse tocca cambiare le sottoclassi (mendokusai)
+
+	esempi con
+
+	Set (interfaccia)
+		public interface Set<E>
+			extends Collection<E>
+
+	HashSet (classe): estende Set supportandolo con una tabella hash
+		public class HashSet<E> 
+			extends AbstractSet<E>
+			implements Set<E>, Cloneable, Serializable
+
+	InstrumentedSet
+	ForwardingSet
+
+	problemi con overriding e rottura degli invarianti. Anche con equals.
+
+Constructor must not invoke overridable methods
+	se lo fanno, accedono a metodi (e magari campi non ancora creati) delle sottoclassi. Fa un po' tu.
+
+Riassumendo,
+	se non è strettamente necessaria da design, evità l'ereditarietà
+	usa classi final, o
+	metti i costruttori privati o di default

@@ -1,0 +1,100 @@
+data di inizio: 2019-01-30
+data di fine: 
+slide 3
+
+Errori
+
+Design pattern
+
+Argomenti trattati
+	classi astratte
+	classi interne
+	java8 interface additions
+	inversion of control (dependency injection)
+
+classe astratta (abstract)
+	si distingue da concreta
+	se una classe ha almeno un metodo astratto, cioè non implementato, allora è astratta
+	si marca abstract la classe e il metodo astratto
+	può avere campi dati (e di solito li ha)
+	alcuni metodi fondamentali li implementa, altri (quelli astratti) li rimanda alle sottoclassi
+	non si può creare un istanza (un oggetto, con una new) di una classe astratta
+	si può invece creare un reference a una classe astratta, cioè si può avere un oggetto che ha per tipo statico una classe astratta, e (eventualmente) per tipo dinamico una sua sottoclasse concreta.
+	la classe astratta ha costruttore, invocato dalle sottoclassi
+	la sottoclasse di classe astratta che ne implementa tutti i metodi è concreta
+	metodi statici
+		un metodo statico implementa una funzionalità di classe
+		non possiede il riferimento this
+		una classe astratta può avere metodi statici
+		però, non esistono metodi statici astratti: i metodi statici sono invocati direttamente nella classe, senza polimorfismo sulle sottoclassi, senza un oggetto di invocazione, quindi renderli astratti significherebbe consentire l'invocazione di un metodo astratto e indefinito. Fortunatamente, ciò non è consentito.
+
+	metodo astratto
+		un metodo concreto può invocare un metodo astratto, a runtime viene sempre invocato l'opportuno metodo concreto (attenzione al forward referencing)
+		forward referencing
+			usare un identificatore prima della sua dichiarazione
+		non si può avere un metodo statico astratto
+		non vale un metodo final astratto (nonsense)
+	si può marcare una classe astratta anche se non ha alcun metodo astratto
+	si può marcare astratta una classe "solo stato" che non possiede alcun metodo
+
+	esempi di classi astratte
+
+	public abstract class A{
+		public A (int x){..}
+	}
+	class C extends A{
+		public C(){super(8);} // ok, chiama il costruttore di A a un parametro
+		public C(){} // errore: cerca di invocare, di default, il costruttore di default di A, che non è più visibile, poiché quello standard di default è stato nascosto da quello a un parametro
+	}
+
+interfaccia (interface)
+	classi astratte senza campi
+	solo metodi astratti (quasi...)
+	da java8, è possibile implementare alcuni metodi di interfaccia, detti defender methods o metodi di default
+	es:
+		interface Parent{
+			public defauld void saluta(){
+				System.out.print("un saluto da papà");
+			}
+		}
+	sono metodi virtuali, estensibili da altre sottointerfacce che estendono l'interfaccia madre, o da classi che la implementano
+
+	si dà quindi il caso che una sottoclasse estenda una superclasse e implementi un'interfaccia, che definiscono uno stesso metodo m(). In questo caso la sottoclasse sceglie il metodo della superclasse, perché più specifico. Questo risolve le ambiguità.
+
+	es:
+		interface Inu{
+			public defauld void saluta(){
+				System.out.print("wan wan!");
+			}
+		}
+
+		class Neko{
+			public defauld void saluta(){
+				System.out.print("gnaa!");
+			}
+		}
+
+		class BabyNeko
+			extends Neko
+			implements Inu{}
+
+		BabyNeko bn = new BabyNeko();
+		bn.saluta(); // stampa "gnaa!", ereditato dalla superclasse neko
+
+	e se una classe implementa due interfacce con lo stesso metodo di default?
+	allora va ridefinito il metodo nella classe.
+	si può invocare il metodo di default delle interfacce implementate con la segnatura
+		nome_interfaccia.super.nome_metodo()
+	cioè "nome_interfaccia.super" chiama il metodo di default di quell'interfaccia
+
+	metodi di default, regole
+		1 le classi vincono sulle interfacce (garantisce compatibilità con codice pre-java8)
+		2 nel caso di due interfacce in relazione tra loro, la figlia vince sulla madre
+		3 se le prime due regole non bastano, la classe deve implementare il metodo per disambiguarlo, oppure dichiararlo astratto
+
+	
+========== da qui in poi, vista la mole di lavoro, scrivo solo cose essenziali.
+	
+	
+	metodi static in interfacce
+	
