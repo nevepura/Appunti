@@ -1,5 +1,5 @@
 data di inizio: 2019-01-30
-data di fine: 
+data di fine: 2019-02-01
 slide 3
 
 Errori
@@ -48,7 +48,7 @@ classe astratta (abstract)
 	}
 
 interfaccia (interface)
-	classi astratte senza campi
+	classi astratte senza campi dati ( cioè senza stato == stateless)
 	solo metodi astratti (quasi...)
 	da java8, è possibile implementare alcuni metodi di interfaccia, detti defender methods o metodi di default
 	es:
@@ -97,4 +97,185 @@ interfaccia (interface)
 	
 	
 	metodi static in interfacce
+		un'interfaccia può avere metodi statici, detti metodi di utilità o helper
+		questi metodi statici non possono essere ridefiniti da sottotipi
+
+	best practice
+		usare le interfacce solo per definire tipi, non costanti
+
+Classi interne
+	Per semplicità, chiamo: 
+	Inner: classe interna, contenuta in
+	Outer: classe esterna
+
+	si definiscono dentro le classi esterne in una posizione a piacere
+	la classe interna è un vero membro della classe esterna, come fosse un metodo o una variabile locale
+	outerThis è il riferimento implicito che la classe interna possiede. Le dà accesso a metodi e campi privati della esterna
 	
+	la classe Outer può accedere ai membri della Inner solo creando un oggetto di tipo Inner
+
+	vantaggi (2)
+		incapsulamento
+		risolve la mancanza dell'ereditarietà multipla
+		le classi interne funzionano bene come classi di utilità ("helper", private)
+
+	Nel rapporto tra Inner e Outer non contano i modificatori public e private: sia Outer che Inner hanno pieno accesso l'una ai metodi e campi dell'altra. 
+
+	in metodi statici della classe esterna: come arrivare a Inner?
+		serve ricevere un riferimento a Outer
+		da questo, costruire un oggetto Inner
+		da quest'ultimo, accedere ai membri di Inner
+
+	se la classe interna è public è accessibile da fuori della outer class, se private no
+
+	es: BankAccount (outer) and Money (inner)
+
+
+	metodi usati per ricavare dei numeri da una stringa
+		Formato stringa
+			iiiii.dd 
+			serie di interi . due decimali
+
+		parseLong()
+		parteInt()
+		substring()
+			substring(0, length-3) // prende i numeri a sx del punto
+			substring(length-2, length) // prende i (2) numeri a dx del punto
+			
+	Method resolution
+	se inner e outer hanno un metodo con lo stesso nome m(), quale viene scelto?
+	invoco m() in Inner
+		1. se in realtà inner non ha m(), si assume che ce l'abbia outer e viene scelto m() di outer
+		2. oscuramento (shadowing): se m() esiste sia in inner che in outer, viene scelto di default m() di inner
+		3. se entrambe hanno m() e voglio m() esterno devo scrivere
+			Outer.this.m()
+			ovvero invocare il metodo partendo dall'oggetto this di Outer (Outer.this)(outerThis)
+
+=== troppo lento!
+	
+	multiple classi interne
+		una Outer può avere multiple classi interne
+		queste classi interne hanno visibilità totale tra loro, anche sui membri private
+		l'importante è che si acceda tramite un oggetto della corrispondente classe interna
+		occhio che due classi interne che si usano reciprocamente sono accoppiate
+
+		public class O{
+			private class I1{
+				private int uno;
+			}
+
+			private class I2{
+				public void stampa2Da1(){
+					System.out.println(new I1().uno);
+				}
+			}
+		}
+
+	innesto di classi interne
+		è possibile inserire classi interne dentro classi interne, con profondità a piacere
+
+	gerarchia
+		classi derivate da Outer (contenente Inner) ereditano la classe interna a loro volta
+
+	classi anonime
+
+	closures
+
+	interfacce innestate
+		possibili
+		aumentano incapsulamento e leggibilità
+
+	innestare classe dentro interfaccia
+		possibile
+		di solito dentro le interfacce si innestano classi statiche
+
+
+Dependency Injection and Inversion of Control
+	obiettivi
+		
+		
+
+	vantaggi
+		coesione alta
+		accoppiamento basso
+		TESTABILITÀ
+		estensibilità
+		riuso
+		incapsulamento (separazione pulita dei componenti)
+		permette l'IoC (inversion of control)
+
+	svantaggi
+		complessità del codice aumenta
+		difficile da capire all'inizio
+		difficile debuggare all'inizio
+
+
+Dependency Injection
+	significa iniettare le dipendenze dentro un componente software
+	Si può fare in tre modi:
+		1. costruttore
+		2. setter
+		3. metodo
+	
+	es. Movies
+	class MovieLister mostra tutti i film
+	interface MovieFinder dice come si trova un film
+	class MovieFinderImpl è implementa i metodi esposti da MovieFinder
+	
+	//caso 0: qui non si fa Dep Inj. Infatto il costruttore è accoppiato all'implementazione
+	
+	public interface MovieFinder {
+		List findAll();
+	}
+
+	class MovieLister{
+		private MovieFinder finder;
+		public MovieLister(){
+			finder = new MovieFinderImpl("any parameter");
+		}
+	}
+
+	1) Constructor Injection. Ora il costruttore usa un parametro esterno che gli passa l'implementazione. Il codice di MovieLister è stabile.
+
+	class MovieLister{
+		private MovieFinder iFinder;
+
+		public MovieLister(MovieFinder f){
+			iFinder = f;
+		}
+		public List<...> getAllMovies(){
+			return iFinder.findAll();
+		}
+	}
+	
+	2) Setter Injection. Dipendenza spostata fuori dal costruttore. Meglio ancora: la creazione dell'oggetto MovieLister non dipende più dall'implementazione esterna. L'oggetto può venire configurato successivamente grazie al setter (grazie1000)
+
+	class MovieLister{
+		private MovieFinder iFinder;
+
+		public MovieLister(){}
+
+		public void setMovieFinder(iFinder){}
+
+		public List<...> getAllMovies(){
+			return iFinder.findAll();
+		}
+	}
+
+	3) Method Injection. Ora praticamente MovieLister è più vuoto che mai. Viene creato all'occorrenza il MovieFinder nel metodo che lo usa. Molto interessante.
+
+	class MovieLister{
+		private MovieFinder iFinder;
+
+		public MovieLister(){}
+
+		public List<...> getAllMovies(MovieFinder iFinder){
+			return iFinder.findAll();
+		}
+	}
+
+IoC
+	i moduli (che moduli?) non devono dipendere tra loro
+	i moduli devono dipendere da astrazioni
+
+	es. Spring, Android
