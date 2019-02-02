@@ -1,0 +1,121 @@
+data di inizio: 2019-02-02
+data di fine: 
+slide 4
+
+Errori
+
+
+Eccezioni 
+	ArrayStoreException
+		Avviene quando si tenta di inserire un tipo scorretto in un array di Object
+		Estensione di RuntimeException (avviene fuori dai blocchi try-catch)
+
+
+Argomenti trattati
+	generics
+
+Generics
+	template di classe == classe generica
+	template di funzione == metodo generico
+
+	variabili di tipo
+		es: T in public class MyClass <T>
+		sono i tipi non definiti, quindi variabili
+
+	i parametri di tipo delle generics NON POSSONO essere tipi primitivi.
+		motivi: a compile time tutto dev'essere compatibile con object. Per motivi di performance e di retrocompatibilità non si fa autoboxing sui primitivi
+
+	slide #5: ArrayStoreException. Per autoboxing, la stringa "i don't fit it" diventa un oggetto. Però, a runtime, non ci sta nell'array objectArray, che ha TS Object[], ma TD Long[]
+
+	i metodi generici sono preferibili alle classi generiche
+	
+	vincolare variabili di tipo
+		es: <T extends Comparable<T>>
+			<T extends T1 & T2>
+		se i tipi estesi sono sia classi che interfacce, le classi stanno a sinistra, le interfacce a destra. Altrimenti, errore compile-time
+			<T extends C1 & C2 & I1 & I2>
+
+	Ereditarietà
+		due classi in relazione supertipo e sottotipo
+		non mantengono quella relazione se inserite come parametro in ArrayList, Vector o in altre classi generiche.
+		Si dice infatti che in Java
+		le generics sono INVARIANTI (ArrayList, Vector)
+		mentre gli array sono COVARIANTI (Integer[], Long[])
+		es: A
+			B extends A
+			ArrayList<T>
+
+			ArrayList<A> e ArrayList<B> non sono in alcuna relazione tra loro!
+
+		Ma se ho due classi generiche, una sottotipo dell'altra,
+		e se sono istanziate con lo stesso tipo,
+		allora quelle due istanze di generics sono in relazione di sottotipo
+
+		es: 
+		A<T>
+		B<T> extends A<T>
+
+		A<Integer> è supertipo di B<Integer>
+		oppure
+		List<Long> è supertipo di ArrayList<Long>
+
+	Restrizioni
+		NON si può usare la new() con un parametro di tipo.
+			né per gli oggetti
+				new T()
+			nemmeno per gli array di oggetti
+				new T[k]
+		In generale, tutte le operazioni che richiedono info sul tipo esatto, come la sua dimensione, non sono concesse.
+			es: op instanceOf
+
+		Le cose statiche in una classe (metodi, campi dati, classi interne) non possono avere lo stesso tipo generico della classe. Ne possono avere uno differente (es: T ed E)
+		
+		non si può fare overloading di uno stesso metodo in una classe dandogli due diversi parametri di tipo T e E. A compile time, sarebbero uguali.
+
+
+	Wildcards
+		caratteri jolly
+		es:
+			<? extends T> (include anche le interfacce, senza dover usare <? implements T>")
+				limite superiore
+				qualsiasi sottitipo di T
+				esempio: calcolo del minimo nelle sottoclassi di T, con T che implementa Comparable
+			<? super T>
+				qualsiasi supertipo di T
+				restrittivo, ma meno rispetto a <T>, dove i supertipi non sono consentiti
+			<?>
+				nessun vincolo
+				casi d'uso:
+					metodo a cui bastano le funzionalità offerte da Object
+					metodo di classe generica che non dipende dal tipo T
+				es: 
+					stampa degli elementi di una lista
+	Type Erasure
+	Raw types
+		La JVM non funziona con tipi generici, ma solo con tipi grezzi, i Raw Types, tipi java sostituiti ai parametri di tipo.
+		A tempo di compilazione, il compilatore della JVM sostituisce le variabili di tipo con il primo bound se disponibile, oppure con Object se unbounded.
+		Inoltre la type erasure permette retrocompatibilità con java5
+
+		es:
+			public class Pipistrelli <T extends Comparable<T>>{
+				private T a;
+				public int compareTo(T x){...}
+			}
+
+			è bounded da Comparable. Una volta compilata diventa 
+
+			public class Pipistrelli{
+				private Comparable a;
+				public int compareTo(Comparable x){...}
+			}
+
+	Consigli per l'uso delle generics
+
+		preferire List ad Array
+			l'invarianza è preferibile alla covarianza
+			meglio avere errori a compile-time che a runtime
+
+		PECS
+			Producer Extends, 
+			Consumer Super
+		
