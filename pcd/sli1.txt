@@ -113,7 +113,7 @@ clone()
 	crea una copia profonda dell'oggetto clonato
 	clone non usa alcun costruttore al suo interno
 	Più formalmente:
-		x.clone() != x
+		x.clone() != x // i ref puntano a aree di memoria diverse
 		x.clone().getClass() == x.getClass()
 		x.clone().equals(x) // a patto di aver ridefinito equals()
 
@@ -126,7 +126,7 @@ clone()
 
 	Nota sugli array: in Java un array è un oggetto: usa clone() su array per copiarlo interamente (deep copy).
 arraycopy()
-	arraycopy() su un array copia i reference (shallow copy)
+	arraycopy() su un array copia solo i reference (shallow copy)
 
 	Ci sono problemi se ho campi final. 
 	Soluzioni:

@@ -1,0 +1,41 @@
+data di inizio: 2019-04-02
+data di fine: 
+slide 4(le ultime 2) e 5
+
+Errori
+	
+Eccezioni 
+
+
+Argomenti trattati
+	
+	IO
+	eccezioni
+
+Stream
+	(Pura poesia della Crafa)
+	Flusso di dati. Sebbene i dati siano di varia natura, sono trattati in modo uniforme.
+	Protocollo unico:
+		si apre lo stream in input o output (per lettura o scrittura) associato a sorgente o destinazione (device)
+		si scambiano dati
+		si chiude lo stream (attenzione: accertarsi sempre della chiusura dopo fine utilizzo)
+
+
+	Si può pensare allo stream come all'astrazione software dei device hardware, un interfaccia per far comunicare l'applicazione con l'ambiente esterno.
+
+
+	package: java.io
+
+Tipi di stream (alla faccia dell'uniformità ;( )
+	byte stream
+	character
+	buffered
+	scanning, formatting
+		per leggere e scrivere testo formattato
+	command line
+	data streams
+		per dati primitivi e stringhe
+	object streams
+		per oggetti
+
+

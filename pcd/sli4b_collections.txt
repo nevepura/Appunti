@@ -1,21 +1,35 @@
 data di inizio: 2019-03-02
-data di fine: 
+data di fine: 2019-04-02 (h 00:02)
 slide 4b
 
 Errori
 	slide 10: aggiungere tipo di ritorno 'String' al metodo toString()
-
+	slide 10: cambiare 'map' con 'm' in "map.put(...)" 
+	possibili errori sulle stampe degli esercizi azzurri. Sembra le coppie vengano ordinate, da 0 a n-1.
 Eccezioni 
 
 
 Argomenti trattati
-	collections
-	ArrayList
-	LinkedList
+	
+	Arrays
+	
+	Comparable
+	Collections
+
 	for-each
+	
+	List
+		ArrayList
+		LinkedList
 	Map
 		HashMap
 		TreeMap
+	Random
+	Set
+		HashSet
+		TreeSet
+	
+
 
 Collection, Collezione
 	è un contenitore di elementi, che di solito sono di tipo diverso
@@ -27,14 +41,14 @@ in Collection trovi sempre
 	algoritmi (metodi)
 
 Nella gerarchia sono importanti
-	List
+	List 
 	Set
 	Map
 	Utilities: Collections e Arrays
 
-inerface List
+List (interface)
 
-class ArrayList
+ArrayList (class)
 	usi
 		ok per accesso e inserimento (credo in coda)(costo ammortizzato)
 		male per rimozione
@@ -67,7 +81,7 @@ class ArrayList
 		ArrayList(int initCapacity)
 
 
-class LinkedList
+LinkedList (class)
 	info
 		implementa List
 		lista doppiamente linkata
@@ -116,16 +130,27 @@ for-each
 		System.out.println(item); // alfa beta delta
 	}
 
-Map
+Map (interface)
 	array associativo di coppie chiave-valore
 	le chiavi sono uniche, cioè tutte diverse
 Map.Entry<K,V>
 	è una entry, cioè una coppia chiave-valore della Map
 
-HashMap
+HashMap (class)
 	info
 		insieme non ordinato di chiavi-valore
 		ha le performance delle funzioni di hash
+
+	come trovare la posizione di un elemento dentro la hashmap
+		calc il suo hash
+		hash % (tableLength -1)
+	campi
+		initialCapacity
+		capacity
+		loadFactor
+		threshold
+			= loadFactor * capacity
+			if (threshold exceeded) resize a una maggiore capacity
 	metodi
 		clear
 			svuota la mappa (= rimuove tutte le mappature)
@@ -140,14 +165,115 @@ HashMap
 			Set<K> keySet()
 			ritorna il Set di chiavi della mappa
 		get
+			V get (Object key)
+			ritorna il valore mappato da key se presente, null se assente
 		put
 		remove
 		size
-		
-TreeMap
+		hashCode
+			oggetti distinti hanno hashCode distinto
+	errori comuni
+		si sconsiglia di mutare elementi contenuti in HashMap. Cambiare un elemento ne modifica l'hashCode. La posizione dell'elemento è determinata dall'hashCode: cambiandolo, la posizione attuale diverrebbe inconsistente con quella calcolabile dal nuovo hashCode.
+	
+TreeMap (class)
 	info
 		insieme ordinato di chiavi-valore
 		implementato con albero Rosso-Nero (O(logn))
 		performance di albero R-N
 
+Set (interface)
+	insieme matematico
+	non ammette duplicati
+	implementazioni: HashSet, TreeSet
 
+HashSet
+	info
+		elementi disordinati
+		tempo costante per accesso, aggiunta, rimozione
+		NON thread-safe
+	metodi
+		add
+		clear
+		clone (shallow copy)
+		contains
+		isEmpty
+		remove
+		size
+
+TreeSet
+	info
+		elementi disordinati
+		tempo logaritmico
+		NON thread-safe
+	costruttori
+		TreeSet()
+			crea treeset vuoto
+		TreeSet(Collection<? extends E> coll)
+			crea un treeset con gli elementi passati dalla collezione
+		TreeSet(Comparator<? super E> comp)
+			crea un ins vuoto il cui ordine è imposto dal comparatore
+		TreeSet(SortedSet<E> s)
+			elementi e ordine dati dal sorted set 
+	metodi
+		add
+		remove
+		ceiling
+		higher
+		first
+			ritorna l'elemento più piccolo
+		last
+			più grande
+		subSet()
+			NavigableSet<E> subSet(E fromElement, booleanfromInclusive,
+									E toElement, boolean toInclusive)
+			ritorna una porzione dell'insieme 
+
+Random
+	metodi
+		nextInt
+			int nextInt(int n)
+				 genera un valore 'x' pseudocasuale 0 <= x < n
+				 tutti gli n valori hanno stessa possibilità di essere generati
+
+Comparable
+	metodo
+		int compareTo(T o)
+		'o' è l'oggetto da comparare
+		ritorna -1,0,1, rispettivamente,
+		se l'oggetto su cui si applica compareTo è inferiore, uguale o superiore dell'oggetto specificato
+	eccezioni
+		NullPointerException
+			se 'o' è null
+		ClassCastException
+			se il tipo di 'o' non può essere confrontatoimpedisce il confronto
+
+
+Collections (class)
+	segnatura
+		pubic class Collections extends Object
+	info
+		insieme di metodi statici e generici che operano su collezioni
+	metodi
+		addAll
+		binarySearch
+		fill
+			riempie la collezione con l'elemento dato 'obj'
+		sort
+		copy
+			shallow copy degli elementi a una lista dest da una lista src 
+
+Arrays (class)
+	segnatura
+		public class Arrays extends Object
+	info
+		metodi statici per operazioni su array e liste e conversioni tra array e liste di uguale dimensione
+	metodi
+		asList
+		binarySearch
+		copyOf
+			copia l'array passato per arg. tronca o filla con padding. shallow copy
+		
+		deepToString
+		deepEquals
+		sort
+	
