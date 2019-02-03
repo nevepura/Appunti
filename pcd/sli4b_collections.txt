@@ -1,0 +1,153 @@
+data di inizio: 2019-03-02
+data di fine: 
+slide 4b
+
+Errori
+	slide 10: aggiungere tipo di ritorno 'String' al metodo toString()
+
+Eccezioni 
+
+
+Argomenti trattati
+	collections
+	ArrayList
+	LinkedList
+	for-each
+	Map
+		HashMap
+		TreeMap
+
+Collection, Collezione
+	è un contenitore di elementi, che di solito sono di tipo diverso
+	lunghezza dinamica
+
+in Collection trovi sempre
+	interfacce
+	implementazioni (classi)
+	algoritmi (metodi)
+
+Nella gerarchia sono importanti
+	List
+	Set
+	Map
+	Utilities: Collections e Arrays
+
+inerface List
+
+class ArrayList
+	usi
+		ok per accesso e inserimento (credo in coda)(costo ammortizzato)
+		male per rimozione
+	
+	metodi
+
+		isEmpty
+		get
+		set
+		iterator //
+		listIterator //
+		add
+		contains
+		indexOf
+		remove
+			E remove (int index)
+				rimuove l'elemento in posizione 'index' e lo ritorna
+			boolean remove (Object o)
+				rimuove la prima occorrenza di 'o', se presente; ritorna true se la rimozione ha successo
+			slide 9:
+				obj.remove(new Object("PrimoOggetto"));
+				ritorna false, perché equals() non è ridefinito
+	altro
+		non è thread-safe
+		inv: length <= capacity
+	costruttori
+		ArrayList()
+		ArrayList(Collection<? extends E>)
+			l'ordine degli elementi è determinato dall'iteratore della collection
+		ArrayList(int initCapacity)
+
+
+class LinkedList
+	info
+		implementa List
+		lista doppiamente linkata
+		non è thread-safe
+
+	usi
+		ok per inserimento e cancellazione
+		male per accesso casuale
+
+	metodi
+		offer
+			boolean offer(E e)
+			tenta di aggiungere l'elemento in coda
+			se fallisce ritorna false
+		peek
+			E peek()
+			ritorna la testa della lista senza rimuoverla
+		pop
+			E pop()
+			ritorna la testa della lista rimuovendola
+		push
+			void push(E e)
+			inserisce in fronte
+	costruttori
+		LinkedLIst()
+		LinkedLIst(Collection<? extends E> c)
+			ordine di costruzione det dall'iteratore
+
+
+for-each
+	for (tipo nome_variabile : nome_collezione) {
+		.. fai operazioni sulla collezione
+	}
+
+	ciclo for che evita di usare direttamente indice o iteratore
+	si usa per array o per oggetti (collezioni) che implementano l'interfaccia Iterable
+	scorre tutta la collezione 
+
+	es
+	List<String> someList = new ArrayList<String>();
+	someList.add("alfa");
+	someList.add("beta");
+	someList.add("delta");
+
+	for (String item: someList) {
+		System.out.println(item); // alfa beta delta
+	}
+
+Map
+	array associativo di coppie chiave-valore
+	le chiavi sono uniche, cioè tutte diverse
+Map.Entry<K,V>
+	è una entry, cioè una coppia chiave-valore della Map
+
+HashMap
+	info
+		insieme non ordinato di chiavi-valore
+		ha le performance delle funzioni di hash
+	metodi
+		clear
+			svuota la mappa (= rimuove tutte le mappature)
+		clone
+			shallow copy
+		containsKey
+		containsValue
+		entrySet
+			Set<Map.Entry<K,V>> entrySet()
+			ritorna un Set contenente tutte le coppie K-V della Map
+		keySet
+			Set<K> keySet()
+			ritorna il Set di chiavi della mappa
+		get
+		put
+		remove
+		size
+		
+TreeMap
+	info
+		insieme ordinato di chiavi-valore
+		implementato con albero Rosso-Nero (O(logn))
+		performance di albero R-N
+
+
