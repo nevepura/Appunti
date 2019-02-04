@@ -1,41 +1,202 @@
 data di inizio: 2019-04-02
-data di fine: 
+data di fine: 2019-04-02
 slide 4(le ultime 2) e 5
 
 Errori
-	
-Eccezioni 
-
+	slide30: in tabella: OutputStreamReader -> OutputStreamWriter
 
 Argomenti trattati
 	
 	IO
 	eccezioni
 
+	Autocloseable
+	Flushable
+
+
+Eccezioni
+	(vedi slides di Ranzy)
+
+	Nota
+		dopo una try, nei blocchi catch, "il polimorfismo impone" che
+		le catch siano poste in ordine dalla più specifica (quella che cattura il sottotipo più specifico) alla più generica.
+		Se non è rispettato l'ordine specifica - generica, il compilatore dà errore.
+
+	Eccezioni, classi di
+
+		Throwable
+			java.lang.Throwable
+			classe padre della gerarchia di errori ed eccezioni
+		Exception
+			java.lang.Exception 
+			extends Throwable
+			qui le eccezioni da controllare (eccetto le runtime)
+		RuntimeException
+			extends Exception
+			qui le eccezioni runtime
+			non sono da gestire
+		Error
+			java.lang.Error
+			extends Throwable
+			qui gli errori irrecuperabili
+		eccezioni user-defined
+			estendono Exception
+			per queste eccezioni si usano throws (nella segnatura del metodo) e throw (per lanciarle)
+
+
+	Eccezioni, quali sono
+
+		ClassNotFound
+		FileNotFound(Exception)
+		ServerNotActive
+			non si riesce a staiblire una connessione di rete
+
+		eccezioni runtime:
+			Arithmetic
+				div by 0
+			ArrayIndexOutOfBound
+			ClassCast
+				fallisce un cast dinamico
+			NullPointer
+				tentativo di accesso a riferimento nullo, o suo uso scorretto, ad esempio invocando un metodo su esso	
+
+	try-with-resources
+		requisiti
+			utilizzabile dalle risorse che implementano Autocloseable
+			gli I/O stream implementano autocloseable
+		dettagli
+			quando il blocco try termina, le risorse sono chiuse in automatico -> non serve più il blocco finally
+			se nel try si verifica un eccezione, 
+
+
 Stream
-	(Pura poesia della Crafa)
-	Flusso di dati. Sebbene i dati siano di varia natura, sono trattati in modo uniforme.
-	Protocollo unico:
-		si apre lo stream in input o output (per lettura o scrittura) associato a sorgente o destinazione (device)
-		si scambiano dati
-		si chiude lo stream (attenzione: accertarsi sempre della chiusura dopo fine utilizzo)
-
-
-	Si può pensare allo stream come all'astrazione software dei device hardware, un interfaccia per far comunicare l'applicazione con l'ambiente esterno.
-
-
 	package: java.io
+	(Pura poesia della Crafa)
 
-Tipi di stream (alla faccia dell'uniformità ;( )
-	byte stream
-	character
-	buffered
-	scanning, formatting
-		per leggere e scrivere testo formattato
-	command line
-	data streams
-		per dati primitivi e stringhe
-	object streams
-		per oggetti
+	Definizione
+		Flusso di dati. Sebbene i dati siano di varia natura, sono trattati in modo uniforme.
+		Protocollo unico:
+			si apre lo stream in input o output (per lettura o scrittura) associato a sorgente o destinazione (device)
+			si scambiano dati
+			si chiude lo stream (attenzione: accertarsi sempre della chiusura dopo fine utilizzo)
 
+
+		Si può pensare allo stream come all'astrazione software dei device hardware in input o in output, un interfaccia per far comunicare l'applicazione con l'ambiente esterno.
+
+	Tipi di stream (alla faccia dell'uniformità )
+
+		byte stream
+		character
+		buffered
+		scanning, formatting
+			per leggere e scrivere testo formattato
+		command line
+		data streams
+			per dati primitivi e stringhe
+		object streams
+			per oggetti
+
+	gerarchia di classi
+		abbr. 
+			InputStream = IS
+			OutputStream = OS
+
+		IS
+			FileIS
+			PipedIS
+			FilterIS
+				BufferedIS
+				DataIS
+				LineNumberIS
+				PushbackIS
+			ByteArrayIS
+			SequenceIS
+			StringBufferIS
+			ObjectIS
+
+		OS
+			ByteArrayOS
+				metodi
+					toByteArray
+						segnatura: byte[] toByteArray()
+						crea un nuovo array di byte con size e contenuti uguali al buffer
+
+			...
+
+
+Byte Streams
+	InputStream (abstract class)
+		metodi
+			read // bloccante
+				int read ()
+				int read (byte[] a)
+				int read (byte[] a, int off, int max)
+			close
+			skip
+			mark
+			reset
+
+	OutputStream
+		metodi
+			write // bloccante
+			close
+			flush
+				svuota eventuali buffer, scrivendoli sullo stream di output
+
+	Byte Sink Streams
+		ByteIS
+		ByteOS
+
+		FileIS
+			read, skip, close
+		FileOS
+			write, close
+
+	Byte Processing Streams
+		BufferedInput/OutputStream (BIS/BOS)
+			permette la bufferizzazione dei dati:
+			le operazioni di read e write non accedono direttamente allo stream, ma a un buffer, riducendo i costi di accesso
+			caso tipico: accesso ai file
+
+		costruttori
+			BufferedInputStream (InputStream is)
+			BufferedInputStream (InputStream is, int size)
+
+		se il buffer è vuoto, una read sul BIS comporta una read sull'IS sorgente
+
+		BOS si comporta analog a BIS
+
+		DataInput/OutputStream
+			metodi
+				readInt
+				readFloat
+				readUTF
+				writeInt
+				...
+			per leggere correttamente da DOS si usa un DIS (i metodi sono duali)
+
+Character Streams
+	
+	codifica
+		internazionale
+		Unicode a 16 bit
+
+	Classi
+
+	Reader
+	Writer
+
+	ISReader
+		FileReader
+	OSWriter
+		FileWriter
+
+	BufferedReader
+		readLine()
+	BufferedWriter
+		writeLine()
+
+	PrintWriter
+
+	StringReader
 

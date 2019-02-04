@@ -1,0 +1,5 @@
+interfaccia funzionale
+	interfaccia contenente esattamente un metodo astratto
+	può avere un numero a piacere di metodi di default
+	esempi di IF: Runnable, Comparable
+

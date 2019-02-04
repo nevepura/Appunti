@@ -1,0 +1,69 @@
+data di inizio: 2019-04-02
+data di fine: 
+slide 6
+
+Errori
+
+
+Argomenti
+	Serializable
+
+Serializzazione
+	stream con oggetti: prevede la trasformazione di oggetti in byte e viceversa
+	serializzazione: da oggetto a (sequenza di) byte
+	deserializzazione: da byte a oggetto
+
+	Serializable (interfaccia marker)
+		gli oggetti su cui è possibile effettuare serial/deserial devono implementare l'interfaccia Serializable
+
+	stream di oggetti
+		classi
+			ObjectIS
+			ObjectOS
+
+		costruttori
+			ObjectInputStream (InputStream)
+			ObjectOutputStream (OutputStream)
+
+		differenza con DataIS/OS
+		DataIS/OS sono classi più semplici e si occupano solo di tipi primitivi, come Float, e anche String.
+		Le performance di DataIS/OS su tipi semplici sono migliori 
+		ObjIS/OS sono usati per tipi complessi, come quelli user-defined
+	metodi
+		(forse da ridefinire)
+		writeObject
+			provoca serializzazione
+		readObject
+			provoca deserializzazione
+
+==== STOP: da qui scrivo SOLO cose gravi
+	
+	non viene serializzato
+		static
+		transient
+		metodi
+
+	eccezioni
+		NotSerializableException
+			accade quando serializzo una classe che non implementa Serializable
+			workaround: transient
+
+	transient
+		modificatore d'accesso per variabili, come public o private
+		la variabile transient non viene serializzata. il suo valore è posto a null.
+
+		per motivi di sicurezza, o variabili di classe che non implem Serializable, o risorse come i File, etc.
+
+	best practice
+		dalle javadocs: 
+		"[svid] is used during deserialization to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization"
+		se i due uid di sender e receiver non combaciano, è generata l'eccezione InvalidClassException
+
+
+		ogni classe che implementa Serializable deve dichiarare un id nel campo serialVersionUID.
+		Se non lo fai tu lo fa la JVM di default, ma è peggio.
+		Solo il modificatore 'private' è opzionale.
+		es
+			private static final long serialVersionUID = -234241243L, che è una fingerprint della classe
+
+		
