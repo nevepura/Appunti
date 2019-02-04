@@ -56,10 +56,12 @@ Serializzazione
 		modificatore d'accesso per variabili, come public o private
 		la variabile transient non viene serializzata. il suo valore è posto a null.
 
+
 		per 
 			dati sensibili (sicurezza)
 			campi di oggetti che non implementano Serializable
 			// forse anche risorse come i File, che magari ce li ho io nel mio pc e il mio amico non li ha
+
 
 	best practice
 		dalle javadocs: 
@@ -73,8 +75,6 @@ Serializzazione
 		es
 			private static final long serialVersionUID = -234241243L, che è una fingerprint della classe
 
-		defaultReadObject()
-		defaultWriteObject()
 
 	default serialization
 		non sempre buona, anzi
@@ -84,3 +84,4 @@ Serializzazione
 
 Protocol Buffers!
 	
+=======
