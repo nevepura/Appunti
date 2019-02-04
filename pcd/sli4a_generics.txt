@@ -47,7 +47,7 @@ Generics
 
 			ArrayList<A> e ArrayList<B> non sono in alcuna relazione tra loro!
 
-		Ma se ho due classi generiche, una sottotipo dell'altra,
+		Unica eccezione: se ho due classi generiche, una sottotipo dell'altra,
 		e se sono istanziate con lo stesso tipo,
 		allora quelle due istanze di generics sono in relazione di sottotipo
 
