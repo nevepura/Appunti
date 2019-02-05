@@ -1,12 +1,16 @@
 data di inizio: 2019-04-02
-data di fine: 
+data di fine: 2019-05-02
 slide 6
 
 Errori
 
 
 Argomenti
-	Serializable
+	Serializzazione
+		Serializable
+	Protocol Buffer
+		Remote Procedure Call
+
 
 Serializzazione
 	stream con oggetti: prevede la trasformazione di oggetti in byte e viceversa
@@ -82,6 +86,32 @@ Serializzazione
 			accoppiamento tra rappresentazione e implementazione
 			deserialization time bomb! overhead di tempo e spazio
 
-Protocol Buffers!
-	
+Protocol Buffer
+	chi lo ha inventato?
+		Google. Nei loro server hanno
+			tanti linguaggi
+			tante versioni
+			need for speed (richieste alte prestazioni)
+		link: https://opensource.googleblog.com/2008/07/protocol-buffers-googles-data.html
+	cos'è
+		meccanismo automatico per la serializzazione di dati, indipendente da linguaggio e piattaforma (platform and language neutral)
+		Bujari dice: "servizio (minimale ed efficiente) di invocazione remota" che richiede 2 cose
+			serializzazione dei dati
+			accordo sulla rappresentazione dei dati (tipo, size, formato)
+	come funziona?
+		prima definisci la tua struttura per i dati
+		poi il codice della struttura è generato, con i parametri che vuoi (tipo di stream, linguaggio)
+
+	dettagli implementativi
+		tutto dentro messaggi 'message'
+		messaggi
+			struttura: <field-type, data-type, field-name, encoding-value, [default value]>
+			tipi permessi: primitivi, enum, messaggi innestati
+
+	cfr (PB, xml)
+		xml è più ricco
+		PB sono più efficienti in termini di spazio (3-10 volte) e spazio (10-100 volte!)
+
+	RPC: Remote Procedure Call
+
 =======
