@@ -1,5 +1,5 @@
 data di inizio: 2019-05-02
-data di fine: 2019
+data di fine: 
 slide 7
 
 Errori
@@ -7,3 +7,17 @@ Errori
 
 Argomenti
 
+	java NIO
+
+
+java NIO
+	java IO vs NIO
+	IO:
+		stream-oriented
+		blocking I/O
+	NIO
+		buffer oriented
+		non blocking I/O
+		selectors
+		channels
+		lock for files

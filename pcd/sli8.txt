@@ -1,0 +1,92 @@
+data di inizio: 2019-06-02
+data di fine: 
+slide 8
+
+Errori
+	slide25: Consumer: cambiare 'println(x)' con 'println(s)'
+		Consumer<String> c = s -> System.out.println(s);
+
+
+
+Argomenti
+	lambda espressioni
+	programmazione funzionale
+	
+
+
+
+Predicato
+	Ciò che si afferma a proposito del soggetto
+	In grammatica, elemento fondamentale della frase, che definisce un'attività, proprietà o condizione del soggetto
+
+Predicate
+	interface Predicate<T>
+	interfaccia funzionale per implementare il metodo test()
+
+slide 18
+test()
+		boolean test (T t)
+			valuta il predicato (che è l'espressione lambda su cui si invoca test) per l'argomento dato in input (t)
+			ovvero, valuta l'argomento t nell'espressione lambda.
+		
+		es
+			Predicate<Integer> p = n -> true;
+
+			p.test(number); // testa number nella funzione 'n -> true', che per ogni number ritorna true, quindi per ogni number passa il test
+
+			Predicate<Integer> p = n -> n%2 == 0; // se è pari ritorna true, altrimenti ritorna false
+			p.test(number) // number nella funzione: se number è pari true, altrim false
+
+Come sono implementate le lambda dalla JVM?
+	In forma di interfacce funzionali
+	Il tipo dell'espr lambda è il tipo dell'interfaccia
+	L'espr lambda è il corpo del metodo astratto dell'interfaccia
+
+Interfacce funzionali
+	marcate con 
+	@functional interface
+	totali: 43
+	importanti: 5
+		Function<T,R>
+			funzione
+			metodo apply: accetta un argomento T, risultato R
+			
+			@functional interface
+			public interface Function<T,R>{
+				R apply(T t);
+				// .. + other default and static methods
+			}
+
+			si può fare composizoine di funzioni
+
+		Supplier<T>
+			il metodo get() fornisce un tipo T per risultato
+			@functional interface
+			public interface Supplier<T>{
+				T get();
+			}
+
+		Consumer<T>
+			ciuccia il parametro T t
+			@functional interface
+			public interface Consumer<T>{
+				void accept(T t);
+			}
+
+		UnaryOperator<T>
+
+		Predicate<T>
+			il metodo test() si invoca su una variabile a cui è assegnata una funzione lambda, e testa il parametro in input.
+			@FunctionalInterface
+			public interface Predicate<T> {
+				boolean test(T t); 
+				// .. + other default and static methods
+			}
+
+		forEach
+			metodo dell'interfaccia Iterable
+
+		cattura di variabile fuori dal corpo della lambda
+
+		riferimento a metodo
+		

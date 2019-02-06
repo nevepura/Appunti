@@ -266,9 +266,12 @@ Arrays (class)
 	segnatura
 		public class Arrays extends Object
 	info
-		metodi statici per operazioni su array e liste e conversioni tra array e liste di uguale dimensione
+		metodi per operazioni su array e liste e conversioni tra array e liste di uguale dimensione
 	metodi
 		asList
+			crea una lista a partire da un'array
+			es
+				List<String> positions = Arrays.asList{"fisrt", "second", "third"};
 		binarySearch
 		copyOf
 			copia l'array passato per arg. tronca o filla con padding. shallow copy
