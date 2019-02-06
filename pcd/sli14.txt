@@ -1,0 +1,33 @@
+data di inizio: 2019-02-06
+data di fine: 
+slide 14
+
+Eccezioni
+	InterruptedException
+
+Argomenti
+
+
+	Thread
+		costruttori
+			Thread()
+			Thread(Runnable target)
+			...
+		metodi
+			start
+			getName
+				public String getName()
+			isAlive()
+				public boolean isAlive()
+				testa se il thread è vivo, cioè è stato avviato (start) e non è ancora stato eliminato
+			run
+				public void run()
+					se il thread è stato costruito con un oggetto Runnable per parametro, invoca il metodo run() di quell'oggetto
+					altrimenti il metodo non fa nulla e ritorna
+
+			currentThread
+				public static Thread currentThread()
+
+			sleep
+				public static void sleep(long millis) throws InterruptedException
+			

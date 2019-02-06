@@ -1,0 +1,68 @@
+data di inizio: 2019-02-06
+data di fine: 
+slide 13
+
+Eccezioni
+	InterruptedException
+		metodi
+			printStackTrace
+				stampa prima toString, poi fillInStackTrace
+
+Argomenti
+
+
+	
+	Condizioni di Coffman
+		condizioni necessarie e sufficienti perché si verifichi un deadlock:
+			mutua esclusione
+				almeno una delle risorse deve presentare mutua esclusione, ovvero non è condivisibile da più processi alla volta
+			hold & wait oppure resource holding
+				chi ha chiesto una risorsa deve aspettare per richiederne altre/ il processo cerca risorse usate da altri
+			no preemption
+				è impedito il prerilascio delle risorse da parte del sistema operativo: non c'è modo di sottrarre una risorsa a chi l'ha ottenuta
+			attesa circolare
+				più processi effettuano hold & wait impedendosi reciprocamente la continuazione
+	
+	Runnable
+		public interface Runnable{
+			void run()
+		}
+
+		IMP! Runnable è un'interfaccia funzionale: può essere implementata da una lambda.
+
+
+	Thread
+
+		public Thread (Runnable target)
+
+		metodi
+			start
+				void start()
+				la JVM invoca il metodo run() sul thread oggetto di invocazione, che inizia l'esecuzione.
+			run
+			sleep
+
+			currentThread
+				ritorna un ref al thread in esecuzione
+			wait
+				wait(object)
+				il thread attende the la risorsa sia disponibile
+			notify
+
+			interrupt
+				public void interrupt()
+				un thread può interromperne un'altro
+				
+				es: Interrupter: un thread il cui unico scopo è interrompere gli altri ogni 1 sec. Stronzo fino all'osso, o giustizia divina?
+
+	1 thread / task è costoso e si complica al crescere del numero dei thread. Come risolvere?
+
+	Executor
+		segnatura
+			public interface Executor
+		info
+			"Executor usa psicoraggio!"
+			public interface Executor
+		metodi
+			execute
+				void execute()

@@ -1,4 +1,4 @@
-data di inizio: 2019-06-02
+data di inizio: 2019-02-06
 data di fine: 
 slide 8
 
