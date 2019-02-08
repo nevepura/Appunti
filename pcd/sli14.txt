@@ -30,4 +30,48 @@ Argomenti
 
 			sleep
 				public static void sleep(long millis) throws InterruptedException
-			
+		
+		stati del thread
+			new
+			runnable
+			running
+			blocked
+			waiting
+			timed-waiting
+			terminated
+
+		Executor
+			public interface Executor
+
+		Callable
+			segnatura
+				public interface Callable<V>{
+					V call() throws Exception;
+				}
+			info
+				come Runnable, ma calcola un risultato, oppure, se non ci riesce, lancia un'eccezione
+				per Runnable basta un Executor
+				per Callable è meglio un ExecutorService (che espone più metodi) (ma non sempre: a volte Callable è usata con un semplice Executor)
+
+		ExecutorService
+			info
+				l'executor service è sempre in attesa di compiti da eseguire, anche dopo la chiusura del main, e impedisce alla JVM di terminare. Per fermarsi, invocare l'executor service con shutdown()
+			segnatura
+				public interface ExecutorService extends Executor
+			metodi
+				shutdown
+					void shutdown()
+					termina le task già avviate, ma non ne accetta di nuove
+					una volta terminate, spegne
+
+		Future
+			segnatura
+				interface Future<V>
+			info
+				rappresenta il risultato di un calcolo asincrono
+				si può verificare
+					se il calcolo è completo, e ottenere il valore
+					se è ancora non è ancora terminato, e aspettare
+			metodi
+				get
+				isDone
